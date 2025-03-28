@@ -1,0 +1,92 @@
+@model SkillSandbox.Controllers.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Admin Dashboard</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Statistics Cards -->
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Assessments</h5>
+                    <h2 class="card-text">@Model.TotalAssessments</h2>
+                    <a href="@Url.Action("ManageAssessments")" class="btn btn-light">Manage Assessments</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <h2 class="card-text">@Model.TotalUsers</h2>
+                    <a href="@Url.Action("ManageUsers")" class="btn btn-light">Manage Users</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Reviews</h5>
+                    <h2 class="card-text">@Model.PendingAnswers</h2>
+                    <a href="@Url.Action("ReviewAnswers")" class="btn btn-light">Review Answers</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Assessments -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Assessments</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Created At</th>
+                                    <th>Questions</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var assessment in Model.RecentAssessments)
+                                {
+                                    <tr>
+                                        <td>@assessment.Title</td>
+                                        <td>@assessment.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                        <td>@assessment.Questions?.Count ?? 0</td>
+                                        <td>
+                                            <a href="@Url.Action("EditAssessment", new { id = assessment.Id })" 
+                                               class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="@Url.Action("ReviewAnswers", new { assessmentId = assessment.Id })" 
+                                               class="btn btn-sm btn-info">Review</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Add any JavaScript functionality here
+    </script>
+} 

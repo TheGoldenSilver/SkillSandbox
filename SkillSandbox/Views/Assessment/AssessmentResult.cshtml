@@ -1,0 +1,62 @@
+@model SkillSandbox.Models.Assessment
+@{
+    ViewData["Title"] = "Assessment Result";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Assessment Result</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h4>@Model.Title</h4>
+                            <p class="lead">@Model.Description</p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="display-4 @(Model.Status == AssessmentStatus.Completed ? "text-success" : "text-danger")">
+                                @Model.Score%
+                            </div>
+                            <span class="badge @(Model.Status == AssessmentStatus.Completed ? "bg-success" : "bg-danger")">
+                                @Model.Status
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="alert @(Model.Status == AssessmentStatus.Completed ? "alert-success" : "alert-warning")">
+                        @Model.Feedback
+                    </div>
+
+                    <h5 class="mt-4">Question Review</h5>
+                    <div class="list-group">
+                        @foreach (var question in Model.AssessmentQuestions)
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">@question.Question</h6>
+                                    <small>@question.Points points</small>
+                                </div>
+                                <p class="mb-1">Correct Answer: @question.CorrectAnswer</p>
+                                @if (!string.IsNullOrEmpty(question.Explanation))
+                                {
+                                    <small class="text-muted">@question.Explanation</small>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mt-4">
+                        @if (Model.Status == AssessmentStatus.Failed)
+                        {
+                            <a asp-action="TakeAssessment" asp-route-id="@Model.Id" class="btn btn-warning">Retake Assessment</a>
+                        }
+                        <a asp-action="Index" class="btn btn-secondary">Back to Assessments</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
